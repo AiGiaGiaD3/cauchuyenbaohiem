@@ -1,0 +1,1321 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Trời còn nắng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,500&family=Patrick+Hand&display=swap">
+<style>
+/* Layout: một cuốn sách lật từng trang — tranh line art + lời kể + một hành động bắt buộc mỗi trang.
+   Màu theo tinh thần Prudential: đỏ, trắng và thang xám ấm/lạnh. Mỗi "thời" của truyện là một biến thể:
+   ký ức (xám ấm, đỏ trầm), nắng (trắng, đỏ), đêm (than chì), mưa (xám đá), quê nhà (trắng).
+   Xanh lá chuối là ngoại lệ duy nhất, để dành cho cánh cổng ở trang cuối. */
+:root{
+  --f-body:'Literata', Georgia, 'Times New Roman', serif;
+  --f-hand:'Patrick Hand', 'Segoe Print', 'Comic Sans MS', cursive;
+  --f-ui:'Be Vietnam Pro', 'Segoe UI', system-ui, sans-serif;
+
+  --red:#ED1B2E; --leaf:#8cc63f; --leaf-ink:#4f8a1c; --water:#9DB7C9;
+
+  /* thời "nắng" là mặc định */
+  --paper:#FFFFFF; --card:#FFF6F6; --ink:#231F20; --muted:#6D6E71; --accent:#ED1B2E; --accent-ink:#C8102E; --line:#E6E7E8;
+  --ln:#58595B; --wash:#F1F2F2; --tint:#FDE3E6; --brickw:#F8DCD6; --sunf:#FFE6E8; --leafw:#F0F3EE; --leafghost:#9DB58A;
+  color-scheme:light;
+}
+body[data-era="memory"]{
+  --paper:#F5F2EF; --card:#EDE8E3; --ink:#3B3534; --muted:#776D68; --accent:#B4545E; --accent-ink:#9A3D48; --line:#DDD5CE;
+  --ln:#8C807A; --wash:#E6E0DA; --tint:#F1DCD8; --brickw:#ECD6CC; --sunf:#F3DED8; --leafw:#E6E4DC; --leafghost:#A0AD8F;
+  color-scheme:light;
+}
+body[data-era="night"]{
+  --paper:#232224; --card:#2C2B2E; --ink:#F1F2F2; --muted:#A7A9AC; --accent:#FF4F5E; --accent-ink:#FF7A85; --line:#3A393D;
+  --ln:#C9CACC; --wash:#36353A; --tint:#4B2D33; --brickw:#4A3836; --sunf:#3D3A3C; --leafw:#303532; --leafghost:#93A487;
+  color-scheme:dark;
+}
+body[data-era="rain"]{
+  --paper:#33373C; --card:#3C4147; --ink:#F1F2F2; --muted:#B4B8BD; --accent:#FF6673; --accent-ink:#FF8C96; --line:#4A4F56;
+  --ln:#D1D3D4; --wash:#464B52; --tint:#5A3F45; --brickw:#5A4A48; --sunf:#464B52; --leafw:#40474A; --leafghost:#9FB393; --water:#B9CCD8;
+  color-scheme:dark;
+}
+body[data-era="home"]{
+  --paper:#FFFFFF; --card:#FFF7F7; --ink:#231F20; --muted:#6D6E71; --accent:#ED1B2E; --accent-ink:#C8102E; --line:#E6E7E8;
+  --ln:#58595B; --wash:#F1F2F2; --tint:#FDE3E6; --brickw:#F8DCD6; --sunf:#FFE6E8; --leafw:#F0F3EE; --leafghost:#9DB58A;
+  color-scheme:light;
+}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);
+  transition:background-color 1.6s ease,color 1.6s ease;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);
+  border-bottom:1px solid var(--line);transition:background-color 1.6s, border-color 1.6s}
+.top-in{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.brand{font-style:italic;font-size:1rem;white-space:nowrap}
+.chs{display:flex;gap:4px;margin:0 auto;padding:0;list-style:none}
+.chs li{font:500 .72rem/1 var(--f-ui);letter-spacing:.08em;color:var(--muted);padding:6px 7px;border-radius:99px;
+  transition:color .4s, background-color .4s}
+.chs li.on{color:#FFFFFF;background:var(--accent)}
+.chs li.past{color:var(--ink)}
+.snd{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:transparent;border-radius:99px;
+  padding:6px 12px;font:500 .78rem var(--f-ui);cursor:pointer;min-height:36px}
+.snd svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+@media (max-width:520px){.brand{display:none}.chs{margin-left:0}.snd span{display:none}}
+
+/* ---------- book ---------- */
+.book{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:22px 40px}
+.scene{display:grid;gap:22px}
+@media (min-width:960px){
+  .scene{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);align-items:start;gap:44px}
+  .art{position:sticky;top:76px}
+}
+.art{margin:0;border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:background-color 1.6s, filter 3s}
+.art svg.scn{display:block;width:100%;height:auto}
+.art.pad{padding:18px}
+.art.dim svg{filter:grayscale(.85) brightness(.5);transition:filter 3.5s ease}
+.col{min-width:0;display:flex;flex-direction:column;gap:6px}
+.kicker{font:600 .74rem var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:6px}
+.text{max-width:62ch;cursor:default}
+.text p{margin:0 0 .85em;font-size:1.13rem;line-height:1.75;text-wrap:pretty}
+.text p.big{font-size:1.55rem;line-height:1.45;font-style:italic;margin-block:.4em .9em;text-wrap:balance}
+.text p.hand{font-family:var(--f-hand);font-size:1.5rem;line-height:1.35;color:var(--accent-ink);margin-block:.3em .9em}
+.text p.q{padding-left:14px;border-left:2px solid var(--accent)}
+.text em{font-style:italic}
+.line{animation:up .8s ease both}
+@keyframes up{from{opacity:0;transform:translateY(8px)}}
+
+.act{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.cue{font:500 .82rem var(--f-ui);color:var(--muted);letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.cue::before{content:"";width:18px;height:1px;background:currentColor}
+.row-btns{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.btn{font:600 .95rem var(--f-ui);letter-spacing:.2px;min-height:48px;padding:12px 24px;border-radius:99px;cursor:pointer;
+  border:1.5px solid var(--accent);background:var(--accent);color:#FFFFFF;transition:transform .15s, opacity .3s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ln)}
+.btn:disabled{opacity:.35;cursor:default}
+.count{font:500 .85rem var(--f-ui);color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* nút giữ */
+.hold{position:relative;overflow:hidden;min-height:58px;padding:14px 26px;border-radius:99px;border:1.5px solid var(--accent);
+  background:transparent;font:600 1rem var(--f-ui);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;
+  width:100%;max-width:420px;text-align:left}
+.hold .fill{position:absolute;inset:0;background:var(--accent);opacity:.2;transform:scaleX(0);transform-origin:left;pointer-events:none}
+.hold .lbl{position:relative;display:flex;align-items:center;gap:10px}
+.hold .lbl::before{content:"";width:12px;height:12px;border-radius:50%;border:2px solid currentColor;flex:none;transition:transform .3s}
+.hold.on .lbl::before{transform:scale(.6);background:currentColor}
+.hold:disabled{opacity:.4;cursor:default}
+
+/* pager */
+.pager{display:flex;align-items:center;gap:12px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
+.pager .hint{flex:1;font:400 .82rem var(--f-ui);color:var(--muted);text-align:center}
+.pager .btn{min-height:44px;padding:10px 18px}
+.next.ready{animation:nudge 1.6s ease 2}
+@keyframes nudge{0%,100%{transform:none}50%{transform:translateX(5px)}}
+.pager[hidden]{display:none!important}
+
+/* ---------- svg line art ---------- */
+.bg{fill:var(--card)}
+.ln,.lnw,.lnt,.brk,.skin,.hair,.sunf,.leafc,.plaster,.cap{stroke:var(--ln);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ln{fill:none} .lnw{fill:var(--wash)} .lnt{fill:var(--tint)} .skin{fill:var(--paper)} .hair{fill:var(--ln)}
+.thin{stroke-width:1.1} .thick{stroke-width:2.6} .soft{opacity:.5}
+.accf{fill:var(--accent);stroke:none}
+.sunf{fill:var(--sunf);stroke:var(--accent)}
+.ray{stroke:var(--accent);stroke-width:1.7;stroke-linecap:round;opacity:.65}
+.leafc{fill:var(--leafw)}
+.brk{fill:var(--brickw);stroke-width:1.1}
+.row{opacity:0;transform:translateY(-18px);transition:opacity .35s, transform .35s cubic-bezier(.3,1.4,.6,1)}
+.row.on{opacity:1;transform:none}
+.plaster{fill:var(--paper);stroke-width:1.2;transform:scaleY(0);transform-box:fill-box;transform-origin:50% 100%;transition:transform 1.4s ease}
+.plaster.on{transform:scaleY(1)}
+.cap{fill:var(--paper);stroke-width:1.2;opacity:0;transition:opacity .6s} .cap.on{opacity:1}
+.gh{fill:none;stroke:var(--leafghost);stroke-width:1.5;stroke-dasharray:4 4}
+.ghl{font:13px var(--f-hand);fill:var(--leafghost)}
+.ghost{opacity:0;transition:opacity 1.8s} .ghost.on{opacity:1}
+.drop{fill:var(--water)} .ripple{fill:none;stroke:var(--water);stroke-width:1.2}
+.ca{fill:var(--tint);stroke:var(--accent);stroke-width:1.5} .nut{fill:var(--wash);stroke:var(--ln);stroke-width:1.3}
+.chalk{stroke:#FBFBF6;fill:none;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.chalkbg{fill:#6D6E71}
+.label{font:12px var(--f-ui);fill:var(--ink)}
+.handt{font:15px var(--f-hand);fill:var(--ink)}
+.yr{font:22px var(--f-hand);fill:var(--ink)}
+.hot{fill:transparent;cursor:pointer;stroke:transparent;stroke-width:2;stroke-dasharray:5 4;transition:stroke .3s}
+.hot:hover{stroke:var(--muted)}
+.hot.marked{stroke:var(--accent);cursor:default}
+.tag{font:600 10px var(--f-ui);letter-spacing:.06em;fill:var(--accent-ink);opacity:0;transition:opacity .5s}
+.tag.on{opacity:1}
+.ghosttree{opacity:0;transition:opacity 3s} .ghosttree .ln{stroke-dasharray:3 5}
+.ghosttree.on{opacity:.45}
+.cashew{cursor:pointer}
+.screw{cursor:pointer;transform-box:fill-box;transform-origin:center}
+.screw .hd{fill:#E5C9B8;stroke:#8B5A3C;stroke-width:1.5;transition:fill .5s, stroke .5s} .screw .sl{stroke:#8B5A3C;stroke-width:1.5;stroke-linecap:round;transition:stroke .5s}
+.screw.new .hd{fill:var(--paper);stroke:var(--ln)} .screw.new .sl{stroke:var(--ln)} .screw.new{cursor:default}
+.screw.spin{animation:spin .7s ease}
+@keyframes spin{to{transform:rotate(540deg)}}
+.rainl{stroke:var(--water);stroke-width:1.2;stroke-linecap:round;opacity:.75;animation:fall .9s linear infinite}
+@keyframes fall{from{transform:translateY(-60px)}to{transform:translateY(260px)}}
+.wing{transform-box:view-box;transition:transform .08s linear}
+.wingf{fill:none;stroke:var(--ln);stroke-width:2.4;stroke-linejoin:round} .wingb{stroke:var(--ln);stroke-width:1.5}
+.wingp{fill:none;stroke:var(--leaf);stroke-width:3.4;stroke-linejoin:round} .wingpb{stroke:var(--leaf);stroke-width:2.4}
+.conv{fill:none;stroke:var(--accent);stroke-width:1.6}
+.box{fill:var(--paper);stroke:var(--line);stroke-width:1.2}
+.node{fill:var(--accent)} .nodet{font:600 14px var(--f-ui);fill:#FFFFFF}
+
+/* ---------- vở học trò ---------- */
+.nb{--nbpaper:#f4f1e6;--nbline:#b9cbe0;--nbink:#34405e;--nbred:#ED1B2E;
+  background:var(--nbpaper);background-image:repeating-linear-gradient(to bottom,transparent 0 33px,var(--nbline) 33px 34px);
+  border-radius:6px;padding:28px 20px 24px 54px;position:relative;font-family:var(--f-hand);color:var(--nbink);min-height:260px}
+.nb::before{content:"";position:absolute;left:40px;top:0;bottom:0;width:1.5px;background:var(--nbred);opacity:.7}
+.nb-h{font-size:1.6rem;line-height:34px;margin-bottom:0}
+.nb ul{list-style:none;margin:0;padding:0}
+.nb li{line-height:34px;font-size:1.32rem}
+.nb-i{background:none;border:0;padding:0 4px;font:inherit;color:inherit;cursor:pointer;position:relative;text-align:left;border-radius:4px}
+.nb-i:disabled{cursor:default}
+.nb-i.next{background:rgba(43,63,120,.08);animation:breathe 2s ease infinite}
+@keyframes breathe{50%{background:rgba(43,63,120,.16)}}
+.nb-i::after{content:"";position:absolute;left:-4px;right:-4px;top:52%;height:2.5px;background:var(--nbink);
+  transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.6,.1,.3,1);border-radius:2px}
+.nb-i.struck{opacity:.62}
+.nb-i.struck::after{transform:scaleX(1)}
+.nb .note{font-size:1rem;color:var(--nbred);margin-left:6px}
+.nb.small{min-height:0;padding-top:16px}
+
+/* ---------- điện thoại ---------- */
+.phone{max-width:310px;margin:0 auto;background:#0d0f15;border-radius:30px;padding:12px;box-shadow:0 18px 40px -18px rgba(0,0,0,.6)}
+.screen{border-radius:22px;overflow:hidden;background:#1E1D20;color:#F1F2F2;font-family:var(--f-ui);height:440px;display:flex;flex-direction:column;position:relative}
+.call{align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
+.avatar{width:84px;height:84px;border-radius:50%;background:#3D3B3F;display:grid;place-items:center;font:600 2rem var(--f-ui);color:#FFFFFF;border:2px solid #ED1B2E}
+.call .nm{font-size:1.4rem;font-weight:600}
+.call .st{font-size:.85rem;color:#a6adc4;font-variant-numeric:tabular-nums;min-height:1.2em}
+.wave{display:flex;gap:4px;align-items:center;height:40px}
+.wave i{display:block;width:4px;height:6px;border-radius:2px;background:#FF7A85;transition:height .2s}
+.wave.talk i{animation:wv .9s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.25s}.wave i:nth-child(4){animation-delay:.05s}
+.wave i:nth-child(5){animation-delay:.3s}.wave i:nth-child(6){animation-delay:.15s}.wave i:nth-child(7){animation-delay:.2s}
+@keyframes wv{50%{height:34px}}
+.cbtn{width:64px;height:64px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center}
+.cbtn svg{width:28px;height:28px;fill:#fff}
+.cbtn.go{background:#2fa45a}.cbtn.end{background:#d9443b}
+.cbtn:disabled{opacity:.3;cursor:default}
+.chat{background:#eef1f5;color:#1c2430}
+.chat-h{padding:14px 14px 10px;background:#fff;border-bottom:1px solid #dde2ea;font-weight:600;font-size:1rem;display:flex;align-items:center;gap:10px}
+.chat-h small{font-weight:400;color:#6b7686;font-size:.75rem;display:block}
+.clist{flex:1;overflow-y:auto;background:#fff;overscroll-behavior:contain}
+.citem{display:flex;gap:10px;padding:10px 14px;border:0;border-bottom:1px solid #eef0f4;background:none;width:100%;text-align:left;cursor:default;color:inherit}
+.citem .av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:600;color:#fff;font-size:.9rem}
+.citem .bd{min-width:0;flex:1}
+.citem .t{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:.88rem}
+.citem .t span{font-weight:400;color:#8a93a3;font-size:.72rem;white-space:nowrap}
+.citem .p{font-size:.8rem;color:#6b7686;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.citem.vy{cursor:pointer;background:#FFF1F2}
+.citem.vy:hover{background:#FDE3E6}
+.scrollhint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(20,26,38,.82);color:#fff;font-size:.72rem;
+  padding:6px 12px;border-radius:99px;pointer-events:none;transition:opacity .4s;white-space:nowrap}
+.msgs{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.day{align-self:center;font-size:.7rem;color:#7d8798;background:#dfe4ec;padding:3px 10px;border-radius:99px}
+.bub{max-width:80%;padding:8px 12px;border-radius:14px;font-size:.88rem;line-height:1.4;animation:up .4s ease both}
+.bub.in{align-self:flex-start;background:#fff;border-bottom-left-radius:4px}
+.bub.out{align-self:flex-end;background:#FDE3E6;border-bottom-right-radius:4px}
+.bub.old{opacity:.75}
+.bub small{display:block;font-size:.66rem;color:#7d8798;margin-top:3px;text-align:right}
+.compose{display:flex;gap:8px;padding:10px;background:#fff;border-top:1px solid #dde2ea}
+.compose .inp{flex:1;min-height:40px;border-radius:20px;background:#eef1f5;padding:10px 14px;font-size:.88rem;color:#1c2430;
+  border:1.5px solid transparent;cursor:text;outline:none}
+.compose .inp:focus{border-color:#ED1B2E}
+.compose .inp.empty::before{content:attr(data-ph);color:#98a1b0}
+.compose .inp.typing::after{content:"";display:inline-block;width:1.5px;height:1em;background:#1c2430;vertical-align:-2px;margin-left:1px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.send{border:0;border-radius:50%;width:40px;height:40px;background:#ED1B2E;cursor:pointer;display:grid;place-items:center}
+.send svg{width:18px;height:18px;fill:#fff}
+.send:disabled{opacity:.3;cursor:default}
+
+/* ---------- khai sức khỏe & lắng nghe ---------- */
+.qs{display:flex;flex-direction:column;gap:8px;max-width:520px}
+.qrow{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:12px;
+  font:400 .92rem/1.45 var(--f-ui);transition:transform .9s cubic-bezier(.2,.8,.2,1), opacity .9s, border-color .6s}
+.qrow span{min-width:0}
+.qrow button{flex:none;min-height:40px;padding:8px 16px;border-radius:99px;border:1.5px solid var(--ink);background:transparent;font:600 .85rem var(--f-ui);cursor:pointer}
+.qrow.light{transform:translateY(-3px);opacity:.55;border-color:transparent}
+.qrow.light button{border-color:transparent;color:var(--accent-ink)}
+.small-note{font:400 .75rem var(--f-ui);color:var(--muted)}
+.meters{display:grid;gap:10px;max-width:420px;font:500 .85rem var(--f-ui)}
+.meter{display:grid;grid-template-columns:minmax(0,1fr) 120px;align-items:center;gap:12px}
+.bars{display:flex;gap:3px;height:22px;align-items:flex-end}
+.bars i{flex:1;background:var(--accent);border-radius:2px;height:10%;transition:height .25s;opacity:.85}
+.meter.none .bars i{background:var(--muted);opacity:.4}
+
+/* ---------- bìa & phần cuối ---------- */
+.cover h1{font-weight:500;font-style:italic;font-size:clamp(2.6rem,7vw,4.2rem);line-height:1.05;margin:0 0 10px;letter-spacing:-.01em}
+.cover .sub{font:400 .95rem/1.6 var(--f-ui);color:var(--muted);margin:0 0 20px;max-width:46ch}
+.cover .ear{font:400 .85rem/1.6 var(--f-ui);color:var(--muted);display:flex;gap:10px;align-items:flex-start;margin:0 0 20px;max-width:46ch}
+.cover .ear svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;margin-top:2px}
+.field{display:flex;gap:8px;flex-wrap:wrap;max-width:520px}
+.field input{flex:1 1 220px;min-width:0;min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);
+  padding:10px 14px;font:400 1rem var(--f-body)}
+.field input:focus{outline:none;border-color:var(--accent)}
+.pledge{font-family:var(--f-hand);font-size:1.5rem;line-height:1.4;color:#34405e;background:#f4f1e6;border-radius:6px;padding:18px 22px;max-width:520px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 33px,#b9cbe0 33px 34px);animation:up .8s ease both}
+.journal{font:400 .88rem/1.7 var(--f-ui);color:var(--muted);margin:0;padding:0;list-style:none;display:grid;gap:2px}
+.journal b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .rainl{animation:none;opacity:.4}
+}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">Trời còn nắng</div>
+    <ol class="chs" id="chs" aria-label="Chương">
+      <li>I</li><li>II</li><li>III</li><li>IV</li><li>V</li><li>VI</li>
+    </ol>
+    <button class="snd" id="snd" aria-pressed="false" type="button">
+      <svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="sndwave" d="M16 9c1.5 1.5 1.5 4.5 0 6M18.5 6.5c3 3 3 8 0 11"/></svg>
+      <span id="sndlbl">Âm thanh: tắt</span>
+    </button>
+  </div>
+</header>
+
+<main class="book">
+  <article class="scene">
+    <figure class="art" id="art"></figure>
+    <div class="col">
+      <div class="kicker" id="kicker"></div>
+      <div class="text" id="text" title="Chạm để đọc nhanh hơn"></div>
+      <div class="act" id="act"></div>
+    </div>
+  </article>
+  <nav class="pager" id="pager">
+    <button class="btn ghost" id="prev" type="button">← Trang trước</button>
+    <span class="hint" id="hint"></span>
+    <button class="btn next" id="next" type="button" disabled>Lật trang →</button>
+  </nav>
+</main>
+
+<script>
+// === DOM ===
+const $ = (s, r = document) => r.querySelector(s);
+const ART = $('#art'), TXT = $('#text'), ACT = $('#act'), KICK = $('#kicker');
+const NEXT = $('#next'), PREV = $('#prev'), HINT = $('#hint'), PAGER = $('#pager');
+
+const CH = ['', 'I · Hai trụ cổng', 'II · Cái thau nhôm', 'III · Trên mái tôn', 'IV · Cuộc gọi', 'V · Quán cà phê vợt', 'VI · Mưa đầu mùa'];
+const state = { i: 0, done: {}, ctx: null, pledge: '' };
+
+// === ÂM THANH (WebAudio, tự tổng hợp — không tải file) ===
+const Snd = {
+  on: false, ac: null, rainN: null, frogT: null,
+  ensure() {
+    if (!this.on) return null;
+    if (!this.ac) { try { this.ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    if (this.ac.state === 'suspended') this.ac.resume();
+    return this.ac;
+  },
+  tone(f, peak, d, type = 'sine', f2) {
+    const ac = this.ensure(); if (!ac) return;
+    const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g).connect(ac.destination); o.start(t); o.stop(t + d + 0.05);
+  },
+  tong() { this.tone(610, .2, 1.5); this.tone(1530, .06, .6); this.tone(2420, .025, .25); },
+  splat() { this.tone(900, .04, .09, 'sine', 260); },
+  click() { this.tone(180, .1, .09, 'triangle', 90); this.tone(1200, .015, .03, 'square'); },
+  pop() { this.tone(480, .07, .14, 'sine', 920); },
+  tick() { this.tone(2400, .02, .04, 'square'); },
+  noise() {
+    const ac = this.ac, len = ac.sampleRate * 2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return buf;
+  },
+  rain(on, level = .32) {
+    const ac = this.ensure();
+    if (on && ac && !this.rainN) {
+      const src = ac.createBufferSource(); src.buffer = this.noise(); src.loop = true;
+      const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1500;
+      const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 4200; bp.Q.value = .8;
+      const g = ac.createGain(), g2 = ac.createGain();
+      g.gain.setValueAtTime(0.0001, ac.currentTime); g.gain.exponentialRampToValueAtTime(level, ac.currentTime + 1.2);
+      g2.gain.value = .25;
+      src.connect(lp).connect(g); src.connect(bp).connect(g2).connect(g); g.connect(ac.destination);
+      src.start(); this.rainN = { src, g };
+    } else if (!on && this.rainN && this.ac) {
+      const { src, g } = this.rainN, t = this.ac.currentTime;
+      g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(g.gain.value, t); g.gain.exponentialRampToValueAtTime(0.0001, t + .9);
+      src.stop(t + 1); this.rainN = null;
+    }
+  },
+  frogs(on) {
+    if (on && !this.frogT) {
+      this.frogT = setInterval(() => {
+        if (Math.random() < .55) {
+          const f = 380 + Math.random() * 220, n = 2 + Math.floor(Math.random() * 3);
+          for (let k = 0; k < n; k++) setTimeout(() => this.tone(f, .018, .06, 'square', f * .8), k * 70);
+        }
+      }, 330);
+    } else if (!on && this.frogT) { clearInterval(this.frogT); this.frogT = null; }
+  },
+  stopAll() { this.rain(false); this.frogs(false); },
+  set(v) {
+    this.on = v; if (!v) this.stopAll(); else this.ensure();
+    const b = $('#snd'); b.setAttribute('aria-pressed', v); $('#sndlbl').textContent = 'Âm thanh: ' + (v ? 'bật' : 'tắt');
+    $('#sndwave').style.opacity = v ? 1 : .2;
+  }
+};
+$('#snd').addEventListener('click', () => Snd.set(!Snd.on));
+$('#sndwave').style.opacity = .2;
+
+// === NGỮ CẢNH TRANG (mỗi trang một ctx; rời trang thì mọi hẹn giờ dừng) ===
+function makeCtx() {
+  const ctx = {
+    alive: true, fast: false, cleanups: [],
+    sleep: ms => new Promise(r => setTimeout(() => { if (ctx.alive) r(); }, ctx.fast ? Math.min(ms, 160) : ms)),
+    wait: ms => new Promise(r => setTimeout(() => { if (ctx.alive) r(); }, ms)), // không bị tua nhanh
+    async say(lines, o = {}) {
+      for (const l of [].concat(lines)) {
+        if (!ctx.alive) return;
+        const p = document.createElement('p');
+        p.className = 'line ' + (o.cls || ''); p.innerHTML = l; TXT.appendChild(p);
+        p.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        await ctx.sleep(o.gap ?? Math.min(2300, 600 + l.replace(/<[^>]+>/g, '').length * 16));
+      }
+    },
+    done(msg) {
+      state.done[state.i] = true; NEXT.disabled = false; NEXT.classList.add('ready');
+      HINT.textContent = msg || '';
+    },
+    every(fn, ms) { const id = setInterval(fn, ms); ctx.cleanups.push(() => clearInterval(id)); return id; },
+    later(fn, ms) { const id = setTimeout(() => ctx.alive && fn(), ms); ctx.cleanups.push(() => clearTimeout(id)); return id; },
+    show(el) { el && el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  };
+  return ctx;
+}
+TXT.addEventListener('click', () => { if (state.ctx) state.ctx.fast = true; });
+
+function h(html) { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; }
+function cue(t) { const c = h(`<div class="cue line">${t}</div>`); ACT.appendChild(c); return c; }
+function btn(label, cls = '') { const b = h(`<button class="btn ${cls} line" type="button">${label}</button>`); return b; }
+
+// nút "giữ" — giữ chuột/ngón tay (hoặc phím Space) để thanh đầy
+function holdBtn(ctx, o) {
+  const b = h(`<button class="hold line" type="button"><span class="fill"></span><span class="lbl">${o.label}</span></button>`);
+  const fill = b.querySelector('.fill');
+  let p = 0, holding = false, last = 0, stallT = 0, finished = false, raf;
+  function loop(t) {
+    if (!ctx.alive || finished) return;
+    const dt = last ? Math.min(64, t - last) : 16; last = t;
+    if (holding) {
+      if (o.stallAt && p >= o.stallAt) { stallT += dt; if (stallT >= o.stallMs) { finished = true; o.onDone && o.onDone(); return; } }
+      else p = Math.min(1, p + dt / o.ms);
+    } else { p = Math.max(0, p - dt / (o.ms * 1.4)); stallT = 0; }
+    fill.style.transform = `scaleX(${p})`;
+    o.onTick && o.onTick(p, holding);
+    if (!o.stallAt && p >= 1) { finished = true; b.disabled = true; stop(); o.onDone && o.onDone(); return; }
+    raf = requestAnimationFrame(loop);
+  }
+  const start = e => { if (finished || b.disabled) return; e.preventDefault(); if (!holding) { holding = true; b.classList.add('on'); o.onStart && o.onStart(); } };
+  const stop = () => { if (holding) { holding = false; b.classList.remove('on'); o.onStop && o.onStop(); } };
+  b.addEventListener('pointerdown', e => { start(e); try { b.setPointerCapture(e.pointerId); } catch (_) {} });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, stop));
+  b.addEventListener('keydown', e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) start(e); });
+  b.addEventListener('keyup', e => { if (e.key === ' ' || e.key === 'Enter') stop(); });
+  b.addEventListener('contextmenu', e => e.preventDefault());
+  raf = requestAnimationFrame(loop); ctx.cleanups.push(() => cancelAnimationFrame(raf));
+  b.fillEl = fill;
+  return b;
+}
+
+// vùng "rê" — rê ngón tay/chuột để tô, vẽ, khép cổng (phím mũi tên thay thế)
+function scrub(ctx, el, o) {
+  let p = 0, down = false, lx = 0, ly = 0, finished = false;
+  el.style.touchAction = 'none'; el.tabIndex = 0;
+  const upd = d => {
+    if (finished) return; p = Math.min(1, p + d); o.onProgress(p);
+    if (p >= 1) { finished = true; o.onDone && o.onDone(); }
+  };
+  el.addEventListener('pointerdown', e => { down = true; lx = e.clientX; ly = e.clientY; try { el.setPointerCapture(e.pointerId); } catch (_) {} });
+  el.addEventListener('pointermove', e => {
+    if (!down) return; const d = Math.hypot(e.clientX - lx, e.clientY - ly); lx = e.clientX; ly = e.clientY;
+    upd(d / (o.need || 1400) * (400 / Math.max(200, el.getBoundingClientRect().width)) * 1.6);
+  });
+  ['pointerup', 'pointercancel'].forEach(ev => el.addEventListener(ev, () => down = false));
+  el.addEventListener('keydown', e => { if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Enter', ' '].includes(e.key)) { e.preventDefault(); upd(.08); } });
+}
+
+// === MINH HỌA SVG (line art) ===
+const BG = `<rect width="400" height="240" class="bg"/>`;
+const GROUND = (y = 198) => `<path d="M-4 ${y} C70 ${y - 5} 130 ${y + 3} 210 ${y - 1} S330 ${y + 3} 404 ${y - 3}" class="ln"/>`;
+const HILLS = `<path d="M-4 172 Q60 150 130 166 T260 160 T404 168" class="ln thin soft"/>`;
+const f1 = n => n.toFixed(1);
+
+function sunArt(cx, cy, r, rays = 8) {
+  let s = '';
+  for (let k = 0; k < rays; k++) {
+    const a = k * 2 * Math.PI / rays;
+    s += `<line x1="${f1(cx + Math.cos(a) * (r + 6))}" y1="${f1(cy + Math.sin(a) * (r + 6))}" x2="${f1(cx + Math.cos(a) * (r + 13))}" y2="${f1(cy + Math.sin(a) * (r + 13))}" class="ray"/>`;
+  }
+  return `<g>${s}<circle cx="${cx}" cy="${cy}" r="${r}" class="sunf"/></g>`;
+}
+// tán lá mềm: vòng các cung lồi
+function cloud(cx, cy, rx, ry, n = 9, cls = 'leafc') {
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / n + (i % 2 ? .08 : -.05), k = i % 3 === 0 ? 1.04 : .96;
+    pts.push([cx + Math.cos(a) * rx * k, cy + Math.sin(a) * ry * k]);
+  }
+  let d = `M${f1(pts[0][0])} ${f1(pts[0][1])}`;
+  for (let i = 1; i <= n; i++) {
+    const p = pts[i % n], q = pts[i - 1], b = Math.hypot(p[0] - q[0], p[1] - q[1]) * .56;
+    d += ` A${f1(b)} ${f1(b)} 0 0 1 ${f1(p[0])} ${f1(p[1])}`;
+  }
+  return `<path d="${d}Z" class="${cls}"/>`;
+}
+// nhân vật line art: đầu tròn, tóc tô đặc, áo tô nhạt, tay chân một nét
+function person(x, b, h, o = {}) {
+  const r = h * .1, hy = b - h + r, sh = hy + r + h * .05, hip = b - h * .4, w = h * .14;
+  const shirt = o.shirt || 'lnw';
+  let hair = `<path d="M${f1(x - r)} ${f1(hy + r * .1)} A${f1(r)} ${f1(r)} 0 0 1 ${f1(x + r)} ${f1(hy + r * .1)} Q${f1(x + r * .2)} ${f1(hy - r * .35)} ${f1(x - r)} ${f1(hy + r * .1)}Z" class="hair"/>`;
+  if (o.hair === 'bun') hair += `<circle cx="${f1(x - r * .85)}" cy="${f1(hy - r * .55)}" r="${f1(r * .45)}" class="hair"/>`;
+  if (o.hair === 'kid') hair += `<circle cx="${f1(x - r * 1.05)}" cy="${f1(hy - r * .1)}" r="${f1(r * .32)}" class="hair"/><circle cx="${f1(x + r * 1.05)}" cy="${f1(hy - r * .1)}" r="${f1(r * .32)}" class="hair"/>`;
+  let armL = `M${f1(x - w)} ${f1(sh + 3)} Q${f1(x - w * 1.5)} ${f1(sh + h * .16)} ${f1(x - w * 1.25)} ${f1(hip + 1)}`;
+  let armR = `M${f1(x + w)} ${f1(sh + 3)} Q${f1(x + w * 1.5)} ${f1(sh + h * .16)} ${f1(x + w * 1.25)} ${f1(hip + 1)}`;
+  if (o.pose === 'reach') {
+    armL = `M${f1(x - w)} ${f1(sh + 3)} Q${f1(x - w * 1.7)} ${f1(sh - h * .08)} ${f1(x - w * 1.3)} ${f1(hy - r * 1.7)}`;
+    armR = `M${f1(x + w)} ${f1(sh + 3)} Q${f1(x + w * 1.7)} ${f1(sh - h * .08)} ${f1(x + w * 1.3)} ${f1(hy - r * 1.7)}`;
+  }
+  if (o.pose === 'shade') armR = `M${f1(x + w)} ${f1(sh + 3)} Q${f1(x + w * 2)} ${f1(sh - h * .02)} ${f1(x + r * .9)} ${f1(hy - r * .3)}`;
+  const torso = `M${f1(x - w)} ${f1(sh + w * .6)} Q${f1(x - w)} ${f1(sh)} ${x} ${f1(sh)} Q${f1(x + w)} ${f1(sh)} ${f1(x + w)} ${f1(sh + w * .6)} L${f1(x + w * .9)} ${f1(hip)} L${f1(x - w * .9)} ${f1(hip)} Z`;
+  const k = b - h * .12;
+  const legs = o.skirt
+    ? `<path d="M${f1(x - w * .4)} ${f1(k)} L${f1(x - w * .45)} ${b} M${f1(x + w * .4)} ${f1(k)} L${f1(x + w * .45)} ${b}" class="ln"/><path d="M${f1(x - w * .9)} ${f1(hip)} L${f1(x - w * 1.25)} ${f1(k)} Q${x} ${f1(k + 3)} ${f1(x + w * 1.25)} ${f1(k)} L${f1(x + w * .9)} ${f1(hip)}" class="${shirt}"/>`
+    : `<path d="M${f1(x - w * .45)} ${f1(hip)} L${f1(x - w * .55)} ${b} M${f1(x + w * .45)} ${f1(hip)} L${f1(x + w * .55)} ${b}" class="ln"/>`;
+  return `<g ${o.attr || ''}>${legs}<path d="${torso}" class="${shirt}"/><path d="${armL} ${armR}" class="ln"/><line x1="${x}" y1="${f1(hy + r)}" x2="${x}" y2="${f1(sh)}" class="ln"/><circle cx="${x}" cy="${f1(hy)}" r="${f1(r)}" class="skin"/>${hair}</g>`;
+}
+
+function brickRow(x, y, r, cls) {
+  const a = r % 2 ? `<path d="M${x + 11} ${y} V${y + 10} M${x + 23} ${y} V${y + 10}" class="ln thin"/>` : `<path d="M${x + 17} ${y} V${y + 10}" class="ln thin"/>`;
+  return `<g class="${cls}"><rect x="${x}" y="${y}" width="34" height="10" rx="1.5" class="brk"/>${a}</g>`;
+}
+function wingShape(x0, cf, cb) {
+  let bars = '';
+  for (let x = x0 + 8; x < x0 + 56; x += 8) bars += `<line x1="${x}" y1="124" x2="${x}" y2="194" class="${cb}"/>`;
+  return `<rect x="${x0 + 2}" y="122" width="52" height="74" rx="2" class="${cf}"/><line x1="${x0 + 2}" y1="150" x2="${x0 + 54}" y2="150" class="${cb}"/>${bars}`;
+}
+function tufts(xs, y = 198) { return xs.map(x => `<path d="M${x} ${y} q2 -7 4 -9 M${x + 4} ${y} q0 -8 -1 -11 M${x + 8} ${y} q-1 -6 -4 -8" class="ln thin soft"/>`).join(''); }
+
+function pillarsSVG(o = {}) {
+  const rows = o.rows ?? 10; let rl = '', rr = '';
+  for (let r = 0; r < 10; r++) {
+    const y = 198 - (r + 1) * 10, cls = r < rows ? 'row on' : 'row';
+    rl += brickRow(110, y, r, cls); rr += brickRow(256, y, r, cls);
+  }
+  const gate = o.gate ? `
+    <defs><clipPath id="paintclip"><rect id="pc" x="144" y="110" width="${o.painted ? 112 : 0}" height="100"/></clipPath></defs>
+    <g id="wl" class="wing" style="transform-origin:146px 160px;transform:scaleX(${o.closed ? 1 : 0})">${wingShape(144, 'wingf', 'wingb')}<g clip-path="url(#paintclip)">${wingShape(144, 'wingp', 'wingpb')}</g></g>
+    <g id="wr" class="wing" style="transform-origin:254px 160px;transform:scaleX(${o.closed ? 1 : 0})">${wingShape(200, 'wingf', 'wingb')}<g clip-path="url(#paintclip)">${wingShape(200, 'wingp', 'wingpb')}</g></g>` : '';
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="${o.label || 'Hai trụ cổng gạch giữa sân đất'}">${BG}
+    ${sunArt(o.sunx || 330, o.suny || 56, 18)}
+    ${HILLS}${GROUND(198)}${tufts([30, 70, 196, 312, 380])}
+    <g id="ghost" class="ghost ${o.ghost ? 'on' : ''}"><rect x="144" y="120" width="112" height="78" class="gh"/><line x1="200" y1="120" x2="200" y2="198" class="gh"/>
+      <text x="200" y="110" class="ghl" text-anchor="middle">${o.ghostText || 'cánh cổng xanh lá chuối · sau vụ điều'}</text></g>
+    ${gate}
+    <g>${rl}</g><g>${rr}</g>
+    <rect x="110" y="148" width="34" height="50" rx="1.5" class="plaster ${o.plaster ? 'on' : ''}"/>
+    <rect x="256" y="148" width="34" height="50" rx="1.5" class="plaster ${o.plaster ? 'on' : ''}"/>
+    <rect x="107" y="93" width="40" height="5" rx="2" class="cap ${rows >= 10 ? 'on' : ''}"/><rect x="253" y="93" width="40" height="5" rx="2" class="cap ${rows >= 10 ? 'on' : ''}"/>
+    ${o.people ? person(332, 198, 118, { shirt: 'lnt' }) + person(362, 198, 72) : ''}
+  </svg>`;
+}
+
+function coverSVG() {
+  let bricks = '';
+  for (let r = 0; r < 10; r++) { bricks += brickRow(110, 188 - r * 10, r, '') + brickRow(256, 188 - r * 10, r, ''); }
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Hai trụ cổng gạch dưới nắng, khoảng trống giữa hai trụ chờ một cánh cổng">${BG}
+    ${sunArt(200, 84, 30, 12)}
+    ${HILLS}${GROUND(198)}${tufts([30, 76, 318, 372])}
+    ${bricks}
+    <rect x="110" y="148" width="34" height="50" rx="1.5" class="plaster on"/><rect x="256" y="148" width="34" height="50" rx="1.5" class="plaster on"/>
+    <rect x="107" y="93" width="40" height="5" rx="2" class="cap on"/><rect x="253" y="93" width="40" height="5" rx="2" class="cap on"/>
+    <rect x="144" y="120" width="112" height="78" class="gh"/><line x1="200" y1="120" x2="200" y2="198" class="gh"/>
+  </svg>`;
+}
+
+function cashewSVG() {
+  const pos = [[128, 96], [170, 66], [214, 86], [252, 112], [150, 128], [226, 136]];
+  const fruits = pos.map((p, i) => `<g class="cashew" data-i="${i}" role="button" tabindex="0" aria-label="Hái trái điều" style="transform:translate(${p[0]}px,${p[1]}px)">
+     <path d="M0 -10 C7 -10 8 -2 6 6 C5 10 -5 10 -6 6 C-8 -2 -7 -10 0 -10Z" class="ca"/><path d="M-5 9 q-1 9 6 9 q6 0 4 -6 q-2 -3 -5 -3z" class="nut"/><circle r="16" fill="transparent"/></g>`).join('');
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Cây điều trĩu trái, cái giỏ dưới gốc">${BG}
+    ${sunArt(342, 44, 15)}
+    ${HILLS}${GROUND(200)}${tufts([40, 250, 290])}
+    <path d="M186 200 C184 170 190 150 182 120 M184 150 C200 140 220 132 236 118 M183 135 C170 125 150 116 132 104" class="ln thick"/>
+    ${cloud(190, 92, 96, 60, 12)}
+    <path d="M150 96 q14 -10 26 -4 M206 70 q12 6 18 16 M226 116 q10 -6 22 -2 M140 120 q8 6 20 6" class="ln thin soft"/>
+    ${fruits}
+    <path d="M300 186 Q321 190 342 186 L336 206 Q321 209 306 206 Z" class="lnw"/><path d="M304 194 Q321 197 339 194 M306 200 Q321 203 337 200" class="ln thin"/>
+    <path d="M300 186 Q321 160 342 186" class="ln"/>
+    <text id="kg" x="321" y="226" text-anchor="middle" class="handt">0 / 6</text>
+    ${person(374, 200, 72)}
+  </svg>`;
+}
+
+function mangoSVG() {
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Ba ngồi nghỉ dưới gốc xoài giữa trưa">${BG}
+    ${sunArt(212, 26, 13)}
+    ${GROUND(198)}${tufts([20, 236, 380])}
+    <rect x="270" y="132" width="112" height="66" class="lnw thin"/>
+    <path d="M270 146 H382 M270 160 H382 M270 174 H382 M270 188 H382 M296 132 V146 M326 146 V160 M352 132 V146 M300 160 V174 M340 174 V188" class="ln thin soft"/>
+    ${person(300, 198, 62)}${person(340, 198, 66, { hair: 'bun', skirt: true, shirt: 'lnt' })}
+    <path d="M118 200 C122 170 116 140 124 104 M122 140 C100 128 84 120 70 110 M124 122 C146 110 160 102 176 96" class="ln thick"/>
+    ${cloud(122, 74, 96, 60, 12)}
+    <path d="M80 70 q14 -8 28 -2 M132 46 q12 4 20 14 M150 96 q10 -6 22 -4" class="ln thin soft"/>
+    <path d="M156 186 L182 186 L186 199 M160 189 L178 192 L180 199" class="ln"/>
+    <g id="baup" style="transform-box:view-box;transform-origin:156px 184px;transition:transform 4s ease">
+      <path d="M150 160 Q150 154 158 154 Q166 154 166 160 L164 186 L152 186 Z" class="lnt"/>
+      <path d="M165 160 Q176 172 180 182" class="ln"/>
+      <line x1="158" y1="150" x2="158" y2="154" class="ln"/>
+      <circle cx="159" cy="143" r="8" class="skin"/>
+      <path d="M151 144 A8 8 0 0 1 167 144 Q160 139 151 144Z" class="hair"/>
+    </g>
+    <path d="M208 186 L228 186 L224 199 L212 199Z" class="lnw"/><path d="M206 199 Q196 188 186 199" class="lnt"/>
+  </svg>`;
+}
+
+function kitchenSVG() {
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Góc bếp có mái dột, nước nhỏ giọt cạnh lu nước">${BG}
+    ${GROUND(200)}
+    <polygon points="0,0 286,0 286,44 0,64" class="lnw"/>
+    <polygon points="312,0 400,0 400,36 312,40" class="lnw"/>
+    ${[30, 80, 130, 180, 230].map(x => `<line x1="${x}" y1="0" x2="${x}" y2="${f1(64 - x * .07)}" class="ln thin soft"/>`).join('')}
+    <line x1="350" y1="0" x2="350" y2="38" class="ln thin soft"/>
+    <path d="M286 44 q6 -6 13 -2 q6 -4 13 -2" class="ln thin"/>
+    <path d="M336 200 C322 200 318 170 326 150 C332 138 368 138 374 150 C382 170 378 200 364 200Z" class="lnw"/>
+    <ellipse cx="350" cy="146" rx="20" ry="5" class="skin"/><path d="M328 168 Q350 174 374 168" class="ln thin soft"/>
+    <line x1="30" y1="134" x2="110" y2="134" class="ln"/><line x1="40" y1="134" x2="40" y2="200" class="ln thin"/><line x1="100" y1="134" x2="100" y2="200" class="ln thin"/>
+    <path d="M46 134 Q46 116 56 116 Q66 116 66 134" class="lnw"/><rect x="74" y="118" width="20" height="16" rx="3" class="lnt"/>
+    <g id="drops"></g>
+    <text id="yr" x="20" y="96" class="yr" opacity="0"></text>
+    <g id="basin" role="button" tabindex="0" aria-label="Cái thau nhôm — kéo tới chỗ dột" style="cursor:grab;transform:translate(80px,192px)">
+      <path d="M-28 -4 L28 -4 L22 10 Q0 13 -22 10 Z" class="lnw"/>
+      <ellipse cx="0" cy="-4" rx="28" ry="5" class="lnw"/>
+      <ellipse id="water" cx="0" cy="-3" rx="0" ry="0" class="drop" opacity=".8"/>
+      <rect x="-34" y="-16" width="68" height="34" fill="transparent"/>
+    </g>
+    <circle id="target" cx="299" cy="192" r="30" fill="none" stroke="var(--water)" stroke-dasharray="3 4" opacity=".8"/>
+  </svg>`;
+}
+
+function roofSVG() {
+  const sx = [62, 132, 202, 272, 342];
+  let ridges = '';
+  for (let x = -40; x < 420; x += 22) ridges += `<line x1="${x}" y1="${f1(96 - x * .05)}" x2="${x - 30}" y2="240" class="ln thin soft"/>`;
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Mái tôn dưới nắng gắt với năm con vít rỉ">${BG}
+    ${sunArt(340, 42, 22, 10)}
+    <path d="M30 40 q10 -8 20 0 q8 -6 16 0" class="ln thin soft"/><path d="M200 28 q10 -8 20 0 q8 -6 16 0" class="ln thin soft"/>
+    <polygon points="0,98 400,78 400,240 0,240" class="lnw"/>
+    ${ridges}
+    <line x1="0" y1="160" x2="400" y2="146" class="ln thin" stroke-dasharray="2 5"/>
+    ${sx.map(x => { const y = f1(160 - x * .035), y1 = f1(154 - x * .035), y2 = f1(166 - x * .035); return `<g class="screw" role="button" tabindex="0" aria-label="Thay con vít rỉ" style="transform-origin:${x}px ${y}px">
+       <circle cx="${x}" cy="${y}" r="10" class="hd"/>
+       <line x1="${x - 6}" y1="${y}" x2="${x + 6}" y2="${y}" class="sl"/><line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" class="sl"/>
+       <circle cx="${x}" cy="${y}" r="20" fill="transparent"/></g>`; }).join('')}
+    <text id="sc" x="20" y="226" class="handt">Vít đã thay: 0 / 5</text>
+  </svg>`;
+}
+
+function yardSVG(o = {}) {
+  const na = o.naStand
+    ? person(182, 204, 50, { hair: 'kid', pose: 'shade', shirt: 'lnt' })
+    : `<g><path d="M174 204 L175 194 Q180 189 185 194 L188 204Z" class="lnt"/><circle cx="180" cy="185" r="5" class="skin"/>
+         <circle cx="174.5" cy="184" r="1.7" class="hair"/><circle cx="185.5" cy="184" r="1.7" class="hair"/><path d="M175 185 A5 5 0 0 1 185 185 Q180 182 175 185Z" class="hair"/></g>`;
+  const bubble = o.bubble ? `<g><rect x="60" y="114" width="172" height="32" rx="16" class="skin"/>
+    <path d="M170 145 L178 156 L182 145" class="skin"/><rect x="168" y="141" width="16" height="5" fill="var(--paper)"/>
+    <text x="146" y="135" text-anchor="middle" class="handt">Trời đâu có mưa, sao ba sửa?</text></g>` : '';
+  const hots = o.hots ? `
+    <rect class="hot" data-k="ladder" x="198" y="58" width="46" height="114" rx="6" role="button" tabindex="0" aria-label="Chiếc thang"/>
+    <rect class="hot" data-k="bike" x="254" y="144" width="70" height="30" rx="6" role="button" tabindex="0" aria-label="Chiếc xe máy"/>
+    <rect class="hot" data-k="cal" x="294" y="90" width="28" height="32" rx="4" role="button" tabindex="0" aria-label="Tờ lịch trên tường"/>
+    <rect class="hot" data-k="house" x="222" y="52" width="178" height="32" rx="6" role="button" tabindex="0" aria-label="Căn nhà"/>
+    <text class="tag" data-t="ladder" x="221" y="52" text-anchor="middle">GIẢ ĐỊNH</text>
+    <text class="tag" data-t="bike" x="289" y="140" text-anchor="middle">GIẢ ĐỊNH</text>
+    <text class="tag" data-t="cal" x="308" y="86" text-anchor="middle">GIẢ ĐỊNH</text>
+    <text class="tag" data-t="house" x="372" y="48" text-anchor="middle">GIẢ ĐỊNH</text>` : '';
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Khoảng sân nhỏ nhìn từ trên mái: Thảo phơi đồ, Na vẽ phấn, chiếc thang dựa vào nhà">${BG}
+    ${sunArt(40, 34, 13)}
+    <g class="ghosttree" id="gtree"><path d="M70 172 C72 140 66 120 74 96" class="ln"/>${cloud(74, 76, 58, 40, 10, 'ln')}</g>
+    ${GROUND(170)}
+    <path d="M20 190 h18 M90 214 h24 M240 200 h16 M330 222 h22" class="ln thin soft"/>
+    <rect x="232" y="80" width="160" height="92" class="skin"/>
+    <polygon points="222,84 400,84 400,58 238,58" class="lnw"/>
+    ${[250, 272, 294, 316, 338, 360, 382].map(x => `<line x1="${x}" y1="58" x2="${x - 6}" y2="84" class="ln thin soft"/>`).join('')}
+    <rect x="250" y="100" width="36" height="28" rx="2" class="skin"/><path d="M268 100 V128 M250 114 H286" class="ln thin"/>
+    <path d="M334 172 V118 Q334 114 338 114 H362 Q366 114 366 118 V172" class="lnt"/><circle cx="360" cy="146" r="1.6" class="hair"/>
+    <rect x="298" y="96" width="20" height="22" rx="1.5" class="skin"/><rect x="298" y="96" width="20" height="5" class="accf"/>
+    <path d="M302 106 h12 M302 111 h12" class="ln thin soft"/>
+    <circle cx="268" cy="164" r="8" class="ln"/><circle cx="308" cy="164" r="8" class="ln"/>
+    <path d="M268 164 L282 150 L300 150 L308 164 M282 150 L278 142 M296 150 L300 142 L308 142" class="ln"/>
+    <path d="M276 150 Q290 144 302 150" class="lnt thin"/>
+    <line x1="205" y1="172" x2="228" y2="60" class="ln"/><line x1="219" y1="172" x2="242" y2="60" class="ln"/>
+    ${[160, 140, 120, 100, 80].map(y => { const t = (172 - y) / 112; return `<line x1="${f1(205 + t * 23)}" y1="${y}" x2="${f1(219 + t * 23)}" y2="${y}" class="ln thin"/>`; }).join('')}
+    <line x1="14" y1="172" x2="14" y2="96" class="ln"/><line x1="132" y1="172" x2="132" y2="96" class="ln"/>
+    <path d="M14 100 Q73 112 132 100" class="ln thin"/>
+    <path d="M30 103 h18 v24 l-9 -3 l-9 3z" class="lnt"/><rect x="56" y="106" width="22" height="20" rx="2" class="lnw"/><path d="M88 106 h16 v28 h-16z" class="lnw"/><path d="M110 103 h14 v20 l-7 -2 l-7 2z" class="lnt"/>
+    ${person(150, 186, 72, { hair: 'bun', skirt: true, pose: 'reach' })}
+    <g opacity=".85"><path d="M150 206 h14 v-10 l-7 -6 l-7 6z M196 196 m-4 0 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0 M172 208 v-10 M184 208 v-10 M172 200 h12" class="ln thin"/></g>
+    ${na}${bubble}${hots}
+  </svg>`;
+}
+
+function cafeSVG() {
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Quán cà phê vợt đầu hẻm, hai người ngồi đối diện">${BG}
+    <path d="M402 -2 V22 ${Array.from({ length: 11 }, (_, k) => `Q${410 - k * 40 - 20} 36 ${410 - (k + 1) * 40} 22`).join(' ')} V-2Z" class="lnt"/>
+    ${GROUND(198)}
+    <line x1="64" y1="198" x2="64" y2="70" class="ln thick"/><line x1="64" y1="72" x2="104" y2="72" class="ln"/><line x1="104" y1="72" x2="104" y2="86" class="ln thin"/>
+    <ellipse cx="104" cy="90" rx="18" ry="5" class="ln"/>
+    <path d="M86 90 Q104 150 122 90" class="lnw"/>
+    <path d="M104 134 V150" class="ln thin" stroke-dasharray="2 5"/>
+    <path d="M88 160 L120 160 L116 196 Q104 199 92 196Z" class="lnw"/><path d="M120 168 q14 2 10 16" class="ln"/>
+    <line x1="176" y1="162" x2="260" y2="162" class="ln thick"/><line x1="186" y1="163" x2="186" y2="198" class="ln"/><line x1="250" y1="163" x2="250" y2="198" class="ln"/>
+    <path d="M194 142 h12 l-1 19 h-10z" class="lnw"/><path d="M195 150 h10 l-.5 11 h-9z" fill="#7a5a4a" opacity=".55"/>
+    <path d="M232 142 h12 l-1 19 h-10z" class="lnw"/><path d="M233 150 h10 l-.5 11 h-9z" fill="#7a5a4a" opacity=".55"/>
+    <path d="M238 132 l18 -3 l1 6 l-18 3z" class="skin"/>
+    <rect x="140" y="182" width="28" height="16" rx="3" class="lnt"/><rect x="270" y="182" width="28" height="16" rx="3" class="lnw"/>
+    ${person(154, 182, 66)}${person(284, 182, 62, { hair: 'bun', shirt: 'lnt' })}
+    <text x="154" y="226" text-anchor="middle" class="handt">Minh</text><text x="284" y="226" text-anchor="middle" class="handt">Vy</text>
+  </svg>`;
+}
+
+function rainSVG() {
+  let rl = '';
+  for (let k = 0; k < 70; k++) {
+    const x = Math.round(Math.random() * 420 - 10), y = Math.round(Math.random() * 200 - 40);
+    rl += `<line x1="${x}" y1="${y}" x2="${x - 3}" y2="${y + 14}" class="rainl" style="animation-delay:-${(Math.random() * .9).toFixed(2)}s;animation-duration:${(.7 + Math.random() * .4).toFixed(2)}s"/>`;
+  }
+  return `<svg viewBox="0 0 400 240" class="scn" role="img" aria-label="Mưa đầu mùa đổ trên mái tôn, Minh đứng ở hiên nhà">${BG}
+    <path d="M40 40 q14 -12 30 -2 q12 -10 26 0 q14 -4 16 8 h-74z M250 30 q14 -12 30 -2 q12 -10 26 0 q14 -4 16 8 h-74z" class="lnw soft"/>
+    ${GROUND(200)}
+    <rect x="120" y="104" width="250" height="96" class="skin"/>
+    <polygon points="98,108 392,108 352,62 138,62" class="lnw"/>
+    ${[160, 190, 220, 250, 280, 310, 340].map(x => `<line x1="${x}" y1="62" x2="${f1(x - 8 + (x - 245) * .08)}" y2="108" class="ln thin soft"/>`).join('')}
+    <path d="M236 200 V138 Q236 134 240 134 H266 Q270 134 270 138 V200" class="lnt"/>
+    <rect x="290" y="128" width="40" height="30" rx="2" class="lnw"/><path d="M310 128 V158" class="ln thin"/>
+    ${person(186, 200, 78)}
+    <g style="transform:rotate(-14deg);transform-origin:258px 200px;transform-box:view-box">${person(258, 200, 46, { hair: 'kid', shirt: 'lnt' })}</g>
+    <line x1="14" y1="200" x2="14" y2="132" class="ln"/><line x1="96" y1="200" x2="96" y2="132" class="ln"/>
+    <path d="M14 136 Q55 146 96 136" class="ln thin"/><path d="M30 139 h14 v20 h-14z" class="lnw"/>
+    ${person(70, 200, 70, { hair: 'bun', skirt: true, pose: 'reach' })}
+    <g id="rain">${rl}</g>
+  </svg>`;
+}
+
+// === CÁC TRANG ===
+const scenes = [
+// ---------- BÌA ----------
+{ ch: 0, era: 'sun', cover: true, async render(ctx) {
+  ART.innerHTML = coverSVG();
+  TXT.innerHTML = `<div class="cover"><h1>Trời còn nắng</h1>
+    <p class="sub">Một câu chuyện tương tác về một người cha, một cái thau nhôm và hai trụ cổng chờ cánh suốt hai mươi bốn năm. Khoảng 10 phút. Mỗi trang cần bạn làm một việc nhỏ thì mới lật được.</p>
+    <p class="ear"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+    Câu chuyện có tiếng mưa, tiếng nước rơi vào thau, tiếng ếch nhái ngoài ruộng. Nếu được, hãy đeo tai nghe.</p></div>`;
+  const row = h(`<div class="row-btns"></div>`);
+  const a = btn('Mở sách, có âm thanh'), b = btn('Đọc trong im lặng', 'ghost');
+  a.onclick = () => { Snd.set(true); go(1); }; b.onclick = () => { Snd.set(false); go(1); };
+  row.append(a, b); ACT.appendChild(row);
+}},
+
+// ---------- I.1 Hai trụ cổng ----------
+{ ch: 1, era: 'memory', hint: 'Đưa đủ gạch cho ba để lật trang', async render(ctx) {
+  ART.innerHTML = pillarsSVG({ rows: 0, people: true });
+  await ctx.say('Nhà Minh ở quê có hai trụ cổng mà không có cánh.');
+  cue('Mùa khô năm Minh lên mười. Cùng ba xây trụ cổng.');
+  const row = h(`<div class="row-btns"></div>`), b = btn('Đưa gạch cho ba'), c = h(`<span class="count">Hàng gạch 0 / 10</span>`);
+  row.append(b, c); ACT.appendChild(row); ctx.show(row);
+  const rows = [...ART.querySelectorAll('.row')]; let n = 0;
+  b.onclick = async () => {
+    rows[n].classList.add('on'); rows[n + 10].classList.add('on'); n++; Snd.click();
+    c.textContent = `Hàng gạch ${n} / 10`;
+    if (n < 10) return;
+    b.disabled = true; ART.querySelectorAll('.cap').forEach(e => e.classList.add('on'));
+    await ctx.sleep(500); ART.querySelectorAll('.plaster').forEach(e => e.classList.add('on'));
+    await ctx.sleep(900);
+    await ctx.say(['Hai trụ gạch cao ngang vai người lớn, tô vữa được một nửa. Ba xây vào mùa khô năm Minh lên mười.']);
+    $('#ghost').classList.add('on');
+    await ctx.say(['Ông bảo bán xong vụ điều sẽ đặt thợ hàn làm cánh cổng sắt, sơn màu xanh lá chuối, “cho nhà mình ra dáng cái nhà”.']);
+    ctx.done();
+  };
+}},
+
+// ---------- I.2 Mùa điều ----------
+{ ch: 1, era: 'memory', hint: 'Hái hết điều trên cây để lật trang', async render(ctx) {
+  ART.innerHTML = cashewSVG();
+  cue('Hái điều cùng ba. Chạm vào từng trái.');
+  let n = 0;
+  ART.querySelectorAll('.cashew').forEach(g => {
+    const pick = async () => {
+      if (g.dataset.picked) return; g.dataset.picked = 1; n++; Snd.pop();
+      const from = g.style.transform;
+      g.animate([{ transform: from }, { transform: `translate(${300 + n * 6}px,184px) scale(.7)` }], { duration: 650, easing: 'cubic-bezier(.5,0,.9,.5)', fill: 'forwards' });
+      $('#kg').textContent = `${n} / 6`;
+      if (n === 6) { await ctx.sleep(800); await ctx.say('Năm đó điều được giá.', { cls: 'big' }); ctx.done(); }
+    };
+    g.addEventListener('click', pick);
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+  });
+}},
+
+// ---------- I.3 Gốc xoài ----------
+{ ch: 1, era: 'memory', hint: '', async render(ctx) {
+  ART.innerHTML = mangoSVG();
+  await ctx.say(['Một trưa tháng Tám, ba đi đổ hồ phụ nhà bác Tư. Ông ngồi nghỉ dưới gốc xoài, nói với mọi người là hơi mệt.']);
+  cue('Giữ nút. Chờ ba nghỉ cho đỡ mệt rồi đứng dậy.');
+  const status = h(`<div class="count line">Ba đang nghỉ…</div>`);
+  const hb = holdBtn(ctx, {
+    label: 'Giữ để chờ ba', ms: 2600, stallAt: .64, stallMs: 3200,
+    onTick(p, holding) {
+      if (p >= .64 && holding) status.textContent = 'Ba đang nghỉ… lâu hơn một chút…';
+      else if (holding) status.textContent = 'Ba nghỉ một chút rồi đứng dậy…';
+      else if (p === 0) status.textContent = 'Ba đang nghỉ…';
+    },
+    async onDone() {
+      hb.disabled = true; hb.classList.remove('on');
+      hb.fillEl.style.transition = 'transform 3.5s ease'; hb.fillEl.style.transform = 'scaleX(0)';
+      status.textContent = '';
+      ART.classList.add('dim'); $('#baup').style.transform = 'rotate(16deg)';
+      Snd.stopAll();
+      await ctx.wait(2600);
+      await ctx.say('Rồi ba không đứng dậy nữa.', { cls: 'big', gap: 400 });
+      await ctx.wait(3000);
+      ctx.done();
+    }
+  });
+  ACT.append(hb, status); ctx.show(hb);
+}},
+
+// ---------- II.1 Gạch đi ----------
+{ ch: 2, era: 'memory', hint: 'Gạch hết các dòng để lật trang', async render(ctx) {
+  const items = ['Đặt cánh cổng sắt, sơn xanh lá chuối', 'Chiếc Cub của ba', 'Chị Hai học lên lớp Mười hai', 'Minh đi học thêm tiếng Anh'];
+  ART.classList.add('pad');
+  ART.innerHTML = `<div class="nb" aria-label="Trang vở: những điều định làm sau mùa điều"><div class="nb-h">Sau mùa điều…</div>
+    <ul>${items.map((t, i) => `<li><button class="nb-i" type="button" data-i="${i}" disabled>${t}</button></li>`).join('')}</ul></div>`;
+  const reveal = [
+    ['Mẹ không đặt cánh cổng.'],
+    ['Mẹ bán chiếc Cub cũ của ba. Ba giờ sáng, mẹ dậy đồ xôi, gánh ra đầu chợ.'],
+    ['Chị Hai nghỉ học năm lớp Mười một, xin vào làm công nhân trên tỉnh.'],
+    ['Minh tự nói với cô dạy tiếng Anh là con thấy không cần học thêm.', 'Cô nhìn Minh hơi lâu, rồi gật đầu.']
+  ];
+  const c = cue('Nhà còn mẹ và hai chị em. Gạch đi từng dòng, theo thứ tự.');
+  const bs = [...ART.querySelectorAll('.nb-i')];
+  const arm = i => { bs[i].disabled = false; bs[i].classList.add('next'); bs[i].focus({ preventScroll: true }); };
+  bs.forEach((b, i) => b.addEventListener('click', async () => {
+    b.disabled = true; b.classList.remove('next'); b.classList.add('struck'); Snd.tick();
+    await ctx.sleep(900); await ctx.say(reveal[i]);
+    if (i === 2) c.textContent = 'Dòng cuối, Minh tự gạch.';
+    if (i < 3) arm(i + 1); else ctx.done();
+  }));
+  arm(0);
+}},
+
+// ---------- II.2 Cái thau nhôm ----------
+{ ch: 2, era: 'memory', hint: 'Đặt thau và để thời gian trôi để lật trang', async render(ctx) {
+  ART.innerHTML = kitchenSVG();
+  const svg = ART.querySelector('svg'), basin = $('#basin'), drops = $('#drops'), water = $('#water'), yr = $('#yr');
+  let placed = false, bx = 80, rate = 1300, wl = 0;
+  const NS = 'http://www.w3.org/2000/svg';
+  function drip() {
+    const d = document.createElementNS(NS, 'circle');
+    d.setAttribute('cx', 299); d.setAttribute('cy', 46); d.setAttribute('r', 3); d.setAttribute('class', 'drop');
+    drops.appendChild(d);
+    const floor = placed ? 142 : 154;
+    const an = d.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${floor}px)` }], { duration: 620, easing: 'cubic-bezier(.5,0,1,1)' });
+    an.onfinish = () => {
+      d.remove(); if (!ctx.alive) return;
+      const r = document.createElementNS(NS, 'ellipse');
+      r.setAttribute('cx', 299); r.setAttribute('cy', placed ? 189 : 200); r.setAttribute('rx', 3); r.setAttribute('ry', 1); r.setAttribute('class', 'ripple');
+      drops.appendChild(r);
+      r.animate([{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(5,3)' }], { duration: 700 }).onfinish = () => r.remove();
+      r.style.transformBox = 'fill-box'; r.style.transformOrigin = 'center';
+      if (placed) { Snd.tong(); wl = Math.min(22, wl + .4); water.setAttribute('rx', wl); water.setAttribute('ry', wl * .17); }
+      else Snd.splat();
+    };
+  }
+  let dripT = null;
+  const setRate = ms => { rate = ms; if (dripT) clearInterval(dripT); dripT = ctx.every(drip, rate); };
+  setRate(1300);
+
+  await ctx.say(['Mái bếp dột ở góc gần lu nước. Ba vẫn tính lợp lại sau mùa điều.']);
+  const c = cue('Kéo cái thau tới chỗ nước nhỏ giọt.');
+  ctx.show(c);
+
+  // kéo thả thau
+  const pt = svg.createSVGPoint();
+  const toSvg = e => { pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+  let drag = false, off = 0, moved = 0;
+  const place = () => {
+    placed = true; bx = 299; basin.style.transition = 'transform .35s ease'; basin.style.transform = `translate(299px,192px)`;
+    basin.style.cursor = 'default'; $('#target').remove(); afterPlace();
+  };
+  basin.addEventListener('pointerdown', e => { if (placed) return; drag = true; moved = 0; off = toSvg(e).x - bx; basin.style.transition = 'none'; basin.setPointerCapture(e.pointerId); basin.style.cursor = 'grabbing'; });
+  basin.addEventListener('pointermove', e => { if (!drag) return; const x = Math.max(30, Math.min(370, toSvg(e).x - off)); moved += Math.abs(x - bx); bx = x; basin.style.transform = `translate(${x}px,192px)`; });
+  basin.addEventListener('pointerup', () => {
+    if (!drag) return; drag = false; basin.style.cursor = 'grab';
+    if (Math.abs(bx - 299) < 36) place();
+    else if (moved < 4) c.textContent = 'Giữ và kéo cái thau sang phải, tới chỗ nước nhỏ giọt.';
+  });
+  basin.addEventListener('keydown', e => { if (!placed && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); place(); } });
+  basin.style.touchAction = 'none';
+
+  async function afterPlace() {
+    c.remove();
+    await ctx.say(['Mẹ đặt dưới đó một cái thau nhôm. Mưa xuống là nghe <em>tong… tong…</em> suốt đêm.']);
+    cue('Giữ nút. Để những mùa mưa trôi qua.');
+    let year = 0;
+    const hb = holdBtn(ctx, {
+      label: 'Giữ để thời gian trôi', ms: 9000,
+      onStart() { setRate(380); yr.setAttribute('opacity', 1); },
+      onStop() { setRate(1300); },
+      onTick(p) {
+        const y = Math.max(1, Math.ceil(p * 11));
+        if (y !== year && p > 0) { year = y; yr.textContent = `Mùa mưa thứ ${y}`; basin.querySelector('path').style.fill = `color-mix(in srgb, var(--wash) ${100 - y * 5}%, #8C7A6E)`; }
+      },
+      async onDone() {
+        setRate(1500); yr.textContent = 'Mười một mùa mưa';
+        await ctx.say(['Cái thau nằm đó mười một năm.']);
+        await ctx.sleep(600);
+        await ctx.say(['Đám giỗ nào cũng có người nhắc: “Ông Ba hiền, thương vợ thương con lắm.” Mẹ chỉ cười, gắp thêm miếng thịt cho khách.']);
+        await ctx.say(['Ba thương thật. Minh biết. Có điều thương thôi thì chưa lợp được mái.'], { cls: 'q' });
+        ctx.done();
+      }
+    });
+    ACT.appendChild(hb); ctx.show(hb);
+  }
+}},
+
+// ---------- III.1 Mái tôn ----------
+{ ch: 3, era: 'sun', hint: 'Thay hết vít rỉ để lật trang', async render(ctx) {
+  ART.innerHTML = roofSVG();
+  await ctx.say('Hai mươi bốn năm sau, Minh ba mươi tư tuổi.', { cls: 'big' });
+  await ctx.say(['Anh làm kỹ sư bảo trì ở Bình Dương. Vợ anh là Thảo. Con gái Na sáu tuổi, tháng Chín này vào lớp Một. Căn nhà nhỏ của họ còn mười hai năm trả góp ngân hàng.',
+    'Một sáng Chủ nhật, nắng gắt, Minh bắc thang leo lên mái tôn. Anh thay mấy con vít đã rỉ, trám lại khe nối trước khi vào mùa mưa.']);
+  const c = cue('Chạm vào từng con vít rỉ để thay.'); ctx.show(c);
+  let n = 0;
+  ART.querySelectorAll('.screw').forEach(s => {
+    const fix = async () => {
+      if (s.classList.contains('new')) return;
+      s.classList.add('spin', 'new'); Snd.click(); n++; $('#sc').textContent = `Vít đã thay: ${n} / 5`;
+      if (n === 5) { await ctx.sleep(700); ctx.done(); }
+    };
+    s.addEventListener('click', fix);
+    s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fix(); } });
+  });
+}},
+
+// ---------- III.2 Câu hỏi của Na ----------
+{ ch: 3, era: 'sun', hint: 'Nhớ lại và vẽ cùng Na để lật trang', async render(ctx) {
+  ART.innerHTML = yardSVG({ naStand: true, bubble: true });
+  await ctx.say(['Na đứng dưới sân, tay che mắt, ngước lên:', '— Trời đâu có mưa, sao ba sửa?', 'Minh đứng khựng lại một chút trên mái tôn nóng rát.',
+    'Câu trả lời bật ra trước khi anh kịp nghĩ. Đó là câu ba nói với anh ngày xưa, khi hai cha con khiêng gạch xây trụ cổng:']);
+  cue('Giữ nút để nhớ lại.');
+  const hb = holdBtn(ctx, {
+    label: 'Giữ để nhớ lại', ms: 2200,
+    async onDone() {
+      document.body.dataset.era = 'memory';
+      ART.innerHTML = pillarsSVG({ rows: 10, plaster: true, people: true, ghost: false, label: 'Ký ức: hai cha con bên trụ cổng' });
+      Snd.tong();
+      await ctx.wait(900);
+      await ctx.say('— Mái phải lợp lúc trời nắng, con. Mưa rồi thì chỉ còn kịp đặt thau.', { cls: 'hand', gap: 3800 });
+      document.body.dataset.era = 'sun';
+      ART.innerHTML = yardSVG({ naStand: false });
+      hb.remove();
+      await ctx.sleep(900);
+      await ctx.say(['Na gật gù như hiểu, rồi ngồi xuống lấy phấn vẽ lên nền xi măng.']);
+      chalk();
+    }
+  });
+  ACT.appendChild(hb); ctx.show(hb);
+
+  function chalk() {
+    cue('Vẽ phấn cùng Na. Rê ngón tay (hoặc chuột) trên nền xi măng.');
+    const pad = h(`<svg viewBox="0 0 400 170" class="scn line" role="img" aria-label="Nền xi măng để vẽ phấn" style="border-radius:12px;cursor:crosshair;display:block;width:100%;max-width:520px">
+      <rect width="400" height="170" class="chalkbg" rx="12"/>
+      <path class="chalk" d="M40 140 V90 H120 V140 Z"/><path class="chalk" d="M30 92 L80 54 L130 92"/><path class="chalk" d="M70 140 V112 H90 V140"/>
+      <circle class="chalk" cx="190" cy="56" r="20"/><path class="chalk" d="M190 22 V12 M190 90 V100 M156 56 H146 M224 56 H234 M166 32 L159 25 M214 32 L221 25 M166 80 L159 87 M214 80 L221 87"/>
+      <path class="chalk" d="M262 142 V84 H280 V142"/><path class="chalk" d="M352 142 V84 H370 V142"/>
+      <path class="chalk" d="M282 92 H314 V142 H282 Z M290 98 V136 M298 98 V136 M306 98 V136"/>
+      <path class="chalk" d="M318 92 H350 V142 H318 Z M326 98 V136 M334 98 V136 M342 98 V136"/>
+    </svg>`);
+    ACT.appendChild(pad); ctx.show(pad);
+    const paths = [...pad.querySelectorAll('.chalk')];
+    const lens = paths.map(p => p.getTotalLength());
+    const total = lens.reduce((a, b) => a + b, 0);
+    paths.forEach((p, i) => { p.style.strokeDasharray = lens[i]; p.style.strokeDashoffset = lens[i]; });
+    let said1 = false;
+    scrub(ctx, pad, {
+      need: 1500,
+      onProgress(prog) {
+        let rem = prog * total;
+        paths.forEach((p, i) => { const d = Math.max(0, Math.min(lens[i], rem)); p.style.strokeDashoffset = lens[i] - d; rem -= lens[i]; });
+        if (!said1 && prog > .48) { said1 = true; ctx.say('Một ngôi nhà, một mặt trời.'); }
+      },
+      async onDone() {
+        await ctx.sleep(1400);
+        await ctx.say('Bé vẽ thêm một cái cổng, có đủ hai cánh.');
+        ctx.done();
+      }
+    });
+  }
+}},
+
+// ---------- III.3 Giả định ----------
+{ ch: 3, era: 'sun', hint: 'Chạm vào từng thứ trong sân rồi đặt tay lên mái', async render(ctx) {
+  ART.innerHTML = yardSVG({ hots: true });
+  await ctx.say(['Từ trên cao, Minh nhìn xuống. Thảo đang phơi đồ. Na cắm cúi tô màu cái cổng. Cả cái sân nhỏ nằm gọn trong tầm mắt anh.',
+    'Anh chợt nghĩ: mọi thứ dưới kia đều đang đứng trên một giả định.']);
+  const c = cue('Chạm vào từng thứ dưới sân.'); ctx.show(c);
+  const lines = {
+    ladder: 'Giả định rằng chiều nay anh sẽ leo xuống chiếc thang này,',
+    bike: 'sáng mai đi làm,',
+    cal: 'cuối tháng lĩnh lương.',
+    house: 'Và cứ thế, mười hai năm nữa.'
+  };
+  const order = ['ladder', 'bike', 'cal', 'house'];
+  let k = 0;
+  // chạm thứ tự nào cũng được, nhưng câu chữ hiện theo trình tự của truyện
+  const p = h(`<p class="line"></p>`);
+  ART.querySelectorAll('.hot').forEach(r => {
+    const mark = async () => {
+      if (r.classList.contains('marked')) return;
+      r.classList.add('marked'); ART.querySelector(`.tag[data-t="${r.dataset.k}"]`).classList.add('on'); Snd.tick();
+      if (k === 0) TXT.appendChild(p);
+      p.textContent = order.slice(0, k + 1).map(x => lines[x]).join(' ');
+      k++;
+      if (k === 4) {
+        c.remove();
+        await ctx.sleep(1600);
+        $('#gtree').classList.add('on');
+        await ctx.say('Ba cũng từng có một giả định như vậy.', { cls: 'big' });
+        await ctx.sleep(800);
+        cue('Đặt tay lên lớp tôn. Giữ thật lâu.');
+        const hb = holdBtn(ctx, {
+          label: 'Giữ tay trên mái tôn', ms: 5500,
+          async onDone() {
+            await ctx.say(['Minh ngồi trên mái tôn rất lâu. Đến khi Thảo gọi xuống ăn cơm, tay anh vẫn đặt trên lớp tôn còn ấm.']);
+            ctx.done();
+          }
+        });
+        ACT.appendChild(hb); ctx.show(hb);
+      }
+    };
+    r.addEventListener('click', mark);
+    r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mark(); } });
+  });
+}},
+
+// ---------- IV.1 Cuộc gọi ----------
+{ ch: 4, era: 'night', hint: 'Gọi cho mẹ để lật trang', async render(ctx) {
+  ART.classList.add('pad');
+  ART.innerHTML = `<div class="phone"><div class="screen call">
+    <div class="avatar">M</div><div class="nm">Mẹ</div><div class="st" id="st">Di động · quê nhà</div>
+    <div class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <button class="cbtn go" id="cb" type="button" aria-label="Gọi cho mẹ"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></button>
+  </div></div>`;
+  await ctx.say('Tối đó Minh gọi về cho mẹ.');
+  const c = cue('Bấm nút xanh để gọi.');
+  const cb = $('#cb'), st = $('#st'), wave = $('#wave');
+  let sec = 0, timer = null;
+  cb.onclick = async () => {
+    cb.onclick = null; cb.disabled = true; c.remove(); st.textContent = 'Đang gọi…';
+    await ctx.wait(1800);
+    st.textContent = '00:00'; timer = ctx.every(() => { sec++; st.textContent = `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`; }, 1000);
+    wave.classList.add('talk');
+    await ctx.say(['Mẹ kể năm nay cây điều sai trái. Mẹ kể cái thau nhôm thủng đáy rồi, mẹ mới mua cái thau nhựa.']);
+    await ctx.wait(1200);
+    wave.classList.remove('talk');
+    await ctx.say(['Minh im lặng một lúc rồi nói:']);
+    await ctx.wait(1800);
+    const say = btn('Nói với mẹ');
+    cue('Đến lượt Minh.'); ACT.appendChild(say); ctx.show(say);
+    say.onclick = async () => {
+      say.remove();
+      await ctx.say('— Năm nay con lợp lại mái bếp cho mẹ. Làm luôn cái cánh cổng.', { gap: 2400 });
+      Snd.frogs(true);
+      await ctx.say(['Đầu dây bên kia, mẹ không nói gì. Chỉ có tiếng ếch nhái ngoài ruộng.']);
+      await ctx.wait(5000);
+      cb.className = 'cbtn end'; cb.disabled = false; cb.setAttribute('aria-label', 'Kết thúc cuộc gọi');
+      cue('Khi bạn sẵn sàng, kết thúc cuộc gọi.');
+      cb.onclick = () => { cb.disabled = true; Snd.frogs(false); clearInterval(timer); st.textContent = 'Cuộc gọi đã kết thúc · ' + st.textContent; ctx.done(); };
+    };
+  };
+}},
+
+// ---------- IV.2 Tin nhắn cũ ----------
+{ ch: 4, era: 'night', hint: 'Tìm tin nhắn của Vy và gửi lời hẹn', async render(ctx) {
+  const chats = [
+    ['Thảo', 'Anh nhớ mua sữa cho Na nha', '19:42', '#d77a61'], ['Nhóm Bảo trì ca B', 'Máy nén số 3 báo lỗi lại rồi anh ơi', '18:05', '#5b7bb5'],
+    ['Mẹ', 'Cuộc gọi thoại · 12 phút', '20:31', '#c29a4a'], ['Phụ huynh Lá 2', 'Thông báo lịch họp đầu năm lớp Một…', 'T6', '#6aa38a'],
+    ['Chị Hai', 'Tết này em về sớm không?', 'T4', '#a46cb0'], ['Anh Tùng xưởng', 'Ok mai anh đổi ca cho', 'T3', '#4f8fb0'],
+    ['Thông báo khoản vay', 'Kỳ thanh toán tháng 9 đã được ghi nhận', '05/09', '#7c8796'], ['Lớp 12A3 cũ', 'Ảnh họp lớp nè mọi người', '28/08', '#c4705b'],
+    ['Điện lực', 'Hóa đơn tiền điện kỳ tháng 8', '20/08', '#7c8796'], ['Hùng', 'Cuối tuần đá banh không', '11/08', '#5aa06b'],
+    ['Cô Lan (chủ nhà cũ)', 'Cảm ơn con nha', '02/07', '#b0884f'], ['Nhóm Đồng hương', 'Ai về quê dịp lễ cho gửi đồ…', '15/06', '#5f84c2'],
+    ['Thảo', 'Đã gửi một ảnh', '30/04', '#d77a61'], ['Tiệm sửa xe Phát', 'Xe anh xong rồi nha', '12/03', '#8a7f6c'],
+    ['Lớp 12A3 cũ', 'Chúc mừng năm mới cả lớp', '29/01', '#c4705b'], ['Khang', 'Tui chuyển rồi đó', '04/12/2025', '#6b8fb5'],
+    ['Nhóm Bảo trì ca B', 'Lịch trực Noel', '20/11/2025', '#5b7bb5'], ['Bảo', 'Haha', '02/10/2025', '#a0a24f']
+  ];
+  ART.classList.add('pad');
+  ART.innerHTML = `<div class="phone"><div class="screen chat" id="scr">
+    <div class="chat-h">Tin nhắn</div>
+    <div class="clist" id="cl">${chats.map(c => `<div class="citem"><div class="av" style="background:${c[3]}">${c[0][0]}</div><div class="bd"><div class="t">${c[0]}<span>${c[2]}</span></div><div class="p">${c[1]}</div></div></div>`).join('')}
+      <button class="citem vy" id="vy" type="button"><div class="av" style="background:#c58f3d">V</div><div class="bd"><div class="t">Vy · 12A3<span>14/08/2025</span></div><div class="p">Để sau nha, tui còn trẻ mà…</div></div></button>
+    </div><div class="scrollhint" id="sh">Kéo xuống ↓</div></div></div>`;
+  await ctx.say('Cúp máy, Minh mở Zalo.');
+  const c = cue('Kéo danh sách xuống rất xa.'); ctx.show(c);
+  const cl = $('#cl'); cl.addEventListener('scroll', () => { $('#sh').style.opacity = cl.scrollTop > 40 ? 0 : 1; });
+  $('#vy').onclick = async () => {
+    c.remove();
+    $('#scr').innerHTML = `<div class="chat-h"><div class="av" style="width:32px;height:32px;border-radius:50%;background:#c58f3d;color:#fff;display:grid;place-items:center;font-weight:600">V</div><div>Vy · 12A3<small>Bạn cùng lớp cấp ba</small></div></div>
+      <div class="msgs" id="msgs"><div class="day">14/08/2025</div>
+      <div class="bub in old">Bữa nào cà phê nha Minh.<small>09:12</small></div>
+      <div class="bub out old">Để sau nha, tui còn trẻ mà, không quan tâm bảo hiểm gì đâu.<small>21:47</small></div></div>
+      <div class="compose"><div class="inp empty" id="inp" tabindex="0" role="textbox" aria-label="Soạn tin" data-ph="Chạm vào đây và gõ phím bất kỳ…"></div>
+      <button class="send" id="send" type="button" disabled aria-label="Gửi"><svg viewBox="0 0 24 24"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></div>`;
+    await ctx.say(['Kéo xuống rất xa, anh tìm thấy tin nhắn của Vy, bạn cùng lớp cấp ba, gửi từ năm ngoái: <em>“Bữa nào cà phê nha Minh.”</em>',
+      'Biết Vy làm tư vấn bảo hiểm, nên hồi đó anh trả lời: <em>“Để sau nha, tui còn trẻ mà, không quan tâm bảo hiểm gì đâu.”</em>',
+      'Nhìn vào tin nhắn, anh gõ:']);
+    const c2 = cue('Chạm vào ô soạn tin rồi gõ (phím nào cũng được, hoặc chạm liên tục).'); ctx.show(c2);
+    const msg = 'Mai Vy rảnh không?'; let n = 0;
+    const inp = $('#inp'), send = $('#send');
+    const type = () => {
+      if (n >= msg.length) return;
+      n++; inp.textContent = msg.slice(0, n); inp.classList.remove('empty'); inp.classList.add('typing'); Snd.tick();
+      if (n >= msg.length) send.disabled = false;
+    };
+    inp.addEventListener('pointerdown', e => { e.preventDefault(); inp.focus({ preventScroll: true }); type(); });
+    inp.addEventListener('keydown', e => { if (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Enter') { e.preventDefault(); if (e.key === 'Enter' && !send.disabled) send.click(); else type(); } });
+    send.onclick = async () => {
+      send.disabled = true; inp.textContent = ''; inp.classList.add('empty'); inp.classList.remove('typing'); c2.remove();
+      const m = $('#msgs');
+      m.insertAdjacentHTML('beforeend', `<div class="day">Hôm nay</div><div class="bub out">${msg}<small>21:58 · Đã gửi</small></div>`);
+      m.scrollTop = m.scrollHeight; Snd.pop();
+      await ctx.sleep(1200); ctx.done();
+    };
+  };
+}},
+
+// ---------- V.1 Quán cà phê vợt ----------
+{ ch: 5, era: 'sun', hint: 'Giúp Vy ghi lại những điều quan trọng để lật trang', async render(ctx) {
+  ART.innerHTML = cafeSVG();
+  await ctx.say(['Quán cà phê vợt đầu hẻm. Vy không mang theo xấp tài liệu nào. Cô hỏi thăm Thảo, hỏi Na học trường nào, hỏi mẹ Minh còn trồng điều không.',
+    'Rồi Vy hỏi một câu:']);
+  await ctx.say('— Đối với Minh, điều gì là quan trọng nhất?', { cls: 'big' });
+  await ctx.say('Minh nghĩ lâu hơn anh tưởng.');
+  const ans = [
+    { say: '— Na được đi học tới nơi tới chốn, học cả tiếng Anh.', note: 'Na đi học tới nơi tới chốn, học cả tiếng Anh', echo: 'lớp tiếng Anh năm ấy Minh tự gạch đi' },
+    { say: '— Căn nhà trả cho xong.', note: 'Căn nhà trả cho xong' },
+    { say: '— Mẹ tui tháng nào cũng có tiền.', note: 'Mẹ tháng nào cũng có tiền' },
+    { pre: 'Anh dừng một chút rồi bật cười:', say: '— Với cái cánh cổng cho mẹ.', note: 'Cánh cổng cho mẹ' }
+  ];
+  const c = cue('Mỗi điều Minh nói, chạm để Vy ghi vào sổ.');
+  const nb = h(`<div class="nb small line" aria-label="Sổ tay của Vy"><div class="nb-h">Điều quan trọng nhất</div><ul id="nbl"></ul></div>`);
+  const slot = h(`<div class="row-btns"></div>`);
+  ACT.append(slot, nb);
+  for (let i = 0; i < ans.length; i++) {
+    const a = ans[i];
+    if (a.pre) await ctx.say(a.pre);
+    const b = btn(`“${a.note}”`, 'ghost'); slot.appendChild(b); ctx.show(b);
+    await new Promise(r => b.onclick = r);
+    if (!ctx.alive) return;
+    b.remove(); Snd.tick();
+    $('#nbl').insertAdjacentHTML('beforeend', `<li class="line">${a.note}${a.echo ? `<span class="note">(${a.echo})</span>` : ''}</li>`);
+    await ctx.say(a.say);
+  }
+  c.remove();
+  // mọi điều quan trọng đều dồn về một người
+  const ys = [16, 68, 120, 172];
+  const conv = h(`<svg viewBox="0 0 400 220" class="scn line" role="img" aria-label="Bốn điều quan trọng, tất cả nối về một mình Minh" style="max-width:520px;display:block;width:100%">
+    ${ans.map((a, i) => `<rect x="4" y="${ys[i]}" width="214" height="34" rx="8" class="box"/><text x="16" y="${ys[i] + 22}" class="label">${a.note.length > 30 ? a.note.slice(0, 28) + '…' : a.note}</text>
+      <path class="conv" d="M218 ${ys[i] + 17} C270 ${ys[i] + 17} 270 110 312 110"/>`).join('')}
+    <circle cx="344" cy="110" r="32" class="node"/><text x="344" y="115" text-anchor="middle" class="nodet">Minh</text>
+  </svg>`);
+  ACT.appendChild(conv); ctx.show(conv);
+  conv.querySelectorAll('.conv').forEach((p, i) => {
+    const L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
+    p.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 1200, delay: 400 + i * 450, fill: 'forwards', easing: 'ease-out' });
+  });
+  await ctx.wait(2800);
+  await ctx.say(['Nói xong, anh mới nhận ra: những điều quan trọng nhất ấy, điều nào cũng đang trông vào một mình anh.']);
+  await ctx.say(['Vy không cười theo. Cô ghi từng dòng vào cuốn sổ nhỏ, giống hệt cách anh từng ghi kế hoạch của mình.']);
+  ctx.done();
+
+  // tùy chọn: người đọc tự viết
+  await ctx.sleep(600);
+  cue('Còn bạn? Điều gì là quan trọng nhất với bạn? (không bắt buộc)');
+  const f = h(`<form class="field line"><input id="mine-item" maxlength="80" placeholder="Ví dụ: Ba mẹ được khỏe, con được đi học…" autocomplete="off"><button class="btn" type="submit">Ghi vào sổ</button></form>`);
+  const mine = h(`<div class="nb small" hidden><div class="nb-h">Sổ của bạn</div><ul id="mine-l"></ul></div>`);
+  const ask = h(`<p class="line" hidden style="font-size:1.08rem;line-height:1.7;margin:4px 0 0"></p>`);
+  ACT.append(f, mine, ask); ctx.show(f);
+  f.addEventListener('submit', e => {
+    e.preventDefault(); const v = f.querySelector('input').value.trim(); if (!v) return;
+    mine.hidden = false; const li = document.createElement('li'); li.className = 'line'; li.textContent = v; $('#mine-l').appendChild(li);
+    f.querySelector('input').value = ''; Snd.tick();
+    ask.hidden = false; ask.textContent = 'Những điều bạn vừa viết, điều nào đang trông vào một mình bạn?';
+    ctx.show(ask);
+  });
+}},
+
+// ---------- V.2 Khai sức khỏe ----------
+{ ch: 5, era: 'sun', hint: 'Trả lời các câu hỏi sức khỏe để lật trang', async render(ctx) {
+  ART.innerHTML = cafeSVG();
+  await ctx.say(['Rồi cô kể về một sản phẩm tên là <em>PRU Yên Tâm Vui Khỏe</em>. Đó là bảo hiểm tử kỳ, đơn giản, chỉ làm đúng một việc cốt lõi: nếu Minh không còn, gia đình nhận khoản tiền bảo hiểm đã thỏa thuận, để những dòng anh vừa nói không phải gạch đi. Phần chăm sóc sức khỏe có thể thêm sau, nếu anh muốn.',
+    '— Nhưng Minh phải khai sức khỏe trung thực. Công ty xem xét rồi mới chấp nhận. Không phải ai hỏi cũng được nhận đâu.',
+    'Minh nghe những câu hỏi về sức khỏe.']);
+  const qs = ['Anh có đang điều trị bệnh gì không?', 'Trong năm năm qua, anh có phải nằm viện hay phẫu thuật không?',
+    'Anh có từng được chẩn đoán bệnh tim, huyết áp hay tiểu đường không?', 'Anh có đang dùng thuốc thường xuyên không?'];
+  cue('Trả lời thay Minh.');
+  const box = h(`<div class="qs line">${qs.map(q => `<div class="qrow"><span>${q}</span><button type="button">Không</button></div>`).join('')}<div class="small-note">Câu hỏi minh họa cho câu chuyện, không phải bản khai sức khỏe thật.</div></div>`);
+  ACT.appendChild(box); ctx.show(box);
+  let n = 0;
+  box.querySelectorAll('.qrow button').forEach(b => b.addEventListener('click', async () => {
+    const r = b.closest('.qrow'); if (r.classList.contains('light')) return;
+    r.classList.add('light'); b.textContent = 'Không ✓'; Snd.pop(); n++;
+    if (n === qs.length) {
+      await ctx.sleep(900);
+      await ctx.say(['Câu nào anh cũng trả lời được một cách nhẹ tênh.']);
+      await ctx.say('Lần đầu tiên, anh thấy mình may mắn vì một điều mà trước giờ anh chưa từng để ý.', { cls: 'big' });
+      ctx.done();
+    }
+  }));
+}},
+
+// ---------- VI.1 Mưa đầu mùa ----------
+{ ch: 6, era: 'rain', hint: 'Lắng nghe mưa để lật trang', async render(ctx) {
+  ART.innerHTML = rainSVG();
+  Snd.rain(true, .14);
+  ctx.cleanups.push(() => Snd.rain(false));
+  await ctx.say(['Chiều hôm đó, trận mưa đầu mùa đổ xuống.',
+    'Na chạy ùa vào nhà, tóc ướt nhẹp, vừa chạy vừa cười. Thảo vội vàng rút đồ. Minh đứng ở hiên, ngẩng lên nghe mưa gõ trên mái tôn. Tiếng mưa đều và dày.']);
+  cue('Giữ nút, nghe cùng Minh.');
+  const m = h(`<div class="meters line">
+      <div class="meter"><span>Tiếng mưa trên mái tôn</span><div class="bars" id="b1">${'<i></i>'.repeat(12)}</div></div>
+      <div class="meter none"><span>Tiếng <em>tong… tong…</em> trong bếp</span><div class="bars" id="b2">${'<i></i>'.repeat(12)}</div></div></div>`);
+  const b1 = [...m.querySelectorAll('#b1 i')], b2 = [...m.querySelectorAll('#b2 i')];
+  let listening = false;
+  ctx.every(() => {
+    b1.forEach(i => i.style.height = (listening ? 35 + Math.random() * 60 : 8 + Math.random() * 14) + '%');
+    b2.forEach(i => i.style.height = '6%');
+  }, 160);
+  const hb = holdBtn(ctx, {
+    label: 'Giữ để lắng nghe', ms: 6000,
+    onStart() { listening = true; Snd.rain(false); Snd.rain(true, .4); },
+    onStop() { listening = false; },
+    async onDone() {
+      listening = false;
+      await ctx.sleep(600);
+      await ctx.say('Không có tiếng <em>tong… tong…</em> nào cả.', { cls: 'big' });
+      ctx.done();
+    }
+  });
+  ACT.append(hb, m); ctx.show(m);
+}},
+
+// ---------- VI.2 Cánh cổng ----------
+{ ch: 6, era: 'home', hint: 'Lắp và sơn cánh cổng để lật trang', async render(ctx) {
+  ART.innerHTML = pillarsSVG({ rows: 10, plaster: true, ghost: true, gate: true, ghostText: 'hai mươi bốn năm', sunx: 70, suny: 70, label: 'Hai trụ gạch ở quê, chờ cánh cổng' });
+  await ctx.say(['Cuối năm đó, ở quê, giữa hai trụ gạch đã đứng chờ hai mươi bốn năm, người ta lắp một cánh cổng sắt.']);
+  const wl = $('#wl'), wr = $('#wr'), svg = ART.querySelector('svg');
+  const c = cue('Rê ngón tay (hoặc chuột) trên tranh để khép hai cánh cổng.'); ctx.show(c);
+  svg.style.cursor = 'ew-resize';
+  scrub(ctx, svg, {
+    need: 700,
+    onProgress(p) { wl.style.transform = wr.style.transform = `scaleX(${p})`; if (p > .9) $('#ghost').classList.remove('on'); },
+    async onDone() {
+      Snd.click(); c.textContent = 'Giờ thì sơn nó. Rê tiếp để sơn.';
+      await ctx.sleep(300);
+      paint();
+    }
+  });
+  function paint() {
+    const pc = $('#pc');
+    const svg2 = ART.querySelector('svg');
+    // tạo lại vùng rê mới cho bước sơn
+    const clone = svg2; clone.style.cursor = 'cell';
+    let p2 = 0, down = false, lx = 0, ly = 0, fin = false;
+    const upd = d => { if (fin) return; p2 = Math.min(1, p2 + d); pc.setAttribute('width', 112 * p2); if (p2 >= 1) { fin = true; finish(); } };
+    clone.addEventListener('pointerdown', e => { down = true; lx = e.clientX; ly = e.clientY; });
+    clone.addEventListener('pointermove', e => { if (!down) return; const d = Math.hypot(e.clientX - lx, e.clientY - ly); lx = e.clientX; ly = e.clientY; upd(d / 900 * (400 / Math.max(200, clone.getBoundingClientRect().width)) * 1.6); });
+    ['pointerup', 'pointercancel'].forEach(ev => clone.addEventListener(ev, () => down = false));
+    clone.addEventListener('keydown', e => { if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Enter', ' '].includes(e.key)) { e.preventDefault(); upd(.08); } });
+  }
+  async function finish() {
+    ART.querySelector('svg').style.cursor = 'default';
+    await ctx.sleep(700);
+    await ctx.say('Sơn màu xanh lá chuối.', { cls: 'big' });
+    TXT.lastElementChild.style.color = 'var(--leaf-ink)';
+    ctx.done();
+  }
+}},
+
+// ---------- KẾT ----------
+{ ch: 6, era: 'home', end: true, async render(ctx) {
+  ART.innerHTML = pillarsSVG({ rows: 10, plaster: true, gate: true, closed: true, painted: true, sunx: 200, suny: 46, label: 'Cánh cổng sắt sơn xanh lá chuối giữa hai trụ gạch' });
+  KICK.textContent = 'Sau trang cuối';
+  await ctx.say('Trời còn nắng.', { cls: 'big' });
+  const j = h(`<ul class="journal line">
+    <li>Bạn đã cùng ba xây <b>10</b> hàng gạch.</li>
+    <li>Cùng mẹ hứng nước mưa <b>11</b> mùa.</li>
+    <li>Thay <b>5</b> con vít trước mùa mưa.</li>
+    <li>Nhìn thấy <b>4</b> giả định trong một khoảng sân.</li></ul>`);
+  ACT.appendChild(j);
+  await ctx.sleep(1400);
+  cue('Mái nhà nào của bạn cần lợp khi trời còn nắng?');
+  const f = h(`<form class="field line"><input id="pledge" maxlength="120" placeholder="Khi trời còn nắng, tôi sẽ…" autocomplete="off"><button class="btn" type="submit">Viết xuống</button></form>`);
+  const out = h(`<div></div>`);
+  const again = btn('Đọc lại từ đầu', 'ghost');
+  again.onclick = () => { state.done = {}; go(0); };
+  ACT.append(f, out, again);
+  if (state.pledge) out.innerHTML = `<div class="pledge">Khi trời còn nắng, tôi sẽ: ${esc(state.pledge)}</div>`;
+  f.addEventListener('submit', e => {
+    e.preventDefault(); const v = f.querySelector('input').value.trim().replace(/^khi trời còn nắng,?\s*tôi sẽ:?\s*/i, ''); if (!v) return;
+    state.pledge = v; out.innerHTML = `<div class="pledge">Khi trời còn nắng, tôi sẽ: ${esc(v)}</div>`; Snd.pop(); ctx.show(out);
+  });
+}}
+];
+
+function esc(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+// === ĐIỀU HƯỚNG ===
+function go(i) {
+  if (state.ctx) { state.ctx.alive = false; state.ctx.cleanups.forEach(f => { try { f(); } catch (_) {} }); }
+  Snd.stopAll();
+  state.i = i; const s = scenes[i];
+  document.body.dataset.era = s.era;
+  ART.className = 'art'; ART.innerHTML = ''; TXT.innerHTML = ''; ACT.innerHTML = '';
+  KICK.textContent = s.ch ? CH[s.ch] : '';
+  PAGER.hidden = !!s.cover;
+  PREV.disabled = i <= 1;
+  NEXT.hidden = !!s.end;
+  NEXT.disabled = !state.done[i]; NEXT.classList.remove('ready');
+  HINT.textContent = state.done[i] ? '' : (s.hint || '');
+  document.querySelectorAll('#chs li').forEach((li, k) => { li.classList.toggle('on', k + 1 === s.ch); li.classList.toggle('past', k + 1 < s.ch); });
+  window.scrollTo({ top: 0 });
+  const ctx = makeCtx(); state.ctx = ctx;
+  s.render(ctx);
+}
+NEXT.addEventListener('click', () => { if (state.i < scenes.length - 1) go(state.i + 1); });
+PREV.addEventListener('click', () => { if (state.i > 1) go(state.i - 1); });
+
+go(0);
+</script>
+
+</body>
+</html>
+
+</body></html>
